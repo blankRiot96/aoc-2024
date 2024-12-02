@@ -5,8 +5,20 @@ import clipboard
 import colorama
 import requests
 
+
+def get_aoc_sample_input(day: int) -> str:
+    with open(f"samples/{day}.txt") as f:
+        return f.read()
+
+
 with open("aoc_headers.json") as f:
-    AOC_HEADERS = json.load(f)
+    try:
+        AOC_HEADERS = json.load(f)
+    except FileNotFoundError:
+        print(
+            "`aoc_headers.json` needs to be created to use this suite. To do so follow "
+            "the steps in the README"
+        )
 
 
 def read_aoc_inputs():
