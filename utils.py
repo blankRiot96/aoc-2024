@@ -61,7 +61,7 @@ def _print(
 
 def answer(part: t.Literal[1, 2], value: int) -> None:
     print(
-        f"{colorama.Fore.GREEN}PART 1{colorama.Fore.RESET} = {colorama.Fore.BLUE}{value}{colorama.Fore.RESET}"
+        f"{colorama.Fore.GREEN}PART {part}{colorama.Fore.RESET} = {colorama.Fore.BLUE}{value}{colorama.Fore.RESET}"
     )
     clipboard.copy(str(value))
 
