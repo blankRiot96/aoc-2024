@@ -51,10 +51,10 @@ def part_1():
 
 def part_2():
     total = 0
-    for i in range(len(box)):
-        for j in range(len(box[0])):
+    for i in range(1, box_height - 1):
+        for j in range(1, box_width - 1):
             char = box[i][j]
-            if char == "A" and 0 < i < box_height - 1 and 0 < j < box_width - 1:
+            if char == "A":
                 res = (
                     box[i - 1][j - 1]
                     + box[i - 1][j + 1]
