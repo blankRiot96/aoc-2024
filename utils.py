@@ -6,6 +6,14 @@ import colorama
 import requests
 
 
+def cprint(text: str, color: str, *args, **kwargs) -> None:
+    print(
+        getattr(colorama.Fore, color.upper()) + text + colorama.Fore.RESET,
+        *args,
+        **kwargs,
+    )
+
+
 def get_aoc_sample_input(day: int) -> str:
     with open(f"samples/{day}.txt") as f:
         return f.read()
