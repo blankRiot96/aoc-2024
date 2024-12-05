@@ -13,11 +13,10 @@ page_nos = [list(map(int, row.split(","))) for row in page_nos]
 
 rules = [list(map(int, row.split("|"))) for row in rules]
 
-total = 0
-for row in page_nos:
+
+def is_correct(row: list[int]) -> bool:
     for rule in rules:
         before, after = rule
-        found_before = False
         found_after = False
         wrong = False
         for page_no in row:
@@ -25,12 +24,55 @@ for row in page_nos:
                 if found_after:
                     wrong = True
                     break
-                found_before = True
             elif page_no == after:
                 found_after = True
         if wrong:
             break
     else:
-        total += row[int(len(row) / 2)]
+        return True
 
-print(total)
+    return False
+
+
+incorrect = []
+# PART 1
+total = 0
+for row in page_nos:
+    if is_correct(row):
+        total += row[int(len(row) / 2)]
+    else:
+        incorrect.append(row)
+
+utils.answer(1, total)
+
+
+# PART 2
+def get_after_indeces(n1, row) -> list[int]:
+    after_indeces = []
+    for rule in rules:
+        if rule[0] == n1:
+            try:
+                after_index = row.index(rule[1])
+                after_indeces.append(after_index)
+            except ValueError:
+                continue
+
+    return after_indeces
+
+
+total = 0
+for row in incorrect:
+    while not is_correct(row):
+        for i, n1 in enumerate(row):
+            after_indeces = get_after_indeces(n1, row)
+            after_indeces.sort()
+            if not after_indeces:
+                continue
+            if i > after_indeces[0]:
+                row.remove(n1)
+                row.insert(after_indeces[0], n1)
+                break
+
+    total += row[int(len(row) / 2)]
+
+utils.answer(2, total)
