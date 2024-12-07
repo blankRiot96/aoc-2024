@@ -1,5 +1,7 @@
 import json
+import time
 import typing as t
+from collections.abc import Callable
 
 import clipboard
 import colorama
@@ -65,6 +67,14 @@ def _print(
 ):
 
     pass
+
+
+def perf(func: Callable):
+    start = time.perf_counter()
+    func()
+    end = time.perf_counter()
+
+    print(f"`{func.__name__}` took {end - start:.2f}s to run")
 
 
 def answer(part: t.Literal[1, 2], value: int) -> None:

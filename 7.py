@@ -1,4 +1,5 @@
 import operator
+import time
 import typing as t
 from collections.abc import Callable
 from itertools import product
@@ -58,5 +59,5 @@ def part_2():
 
 
 if __name__ == "__main__":
-    part_1()
-    part_2()
+    utils.perf(part_1)
+    utils.perf(part_2)
