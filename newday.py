@@ -16,10 +16,7 @@ base_file_content = f"""
 import utils
 import rich
 
-# print = utils._print
-# rich.print = utils._print
-
-sample = utils.get_aoc_sample_input({day})
+sample = utils.get_aoc_input({day})
 
 def part_1():
     pass
