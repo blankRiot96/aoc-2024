@@ -1,11 +1,30 @@
+import argparse
 import json
 import time
 import typing as t
 from collections.abc import Callable
+from dataclasses import dataclass
 
+import click
 import clipboard
 import colorama
 import requests
+
+parser = argparse.ArgumentParser(
+    prog="aoc_util",
+    description="Contains utilities for AOC",
+)
+
+parser.add_argument("-d", "--debug", action="store_true")
+args = parser.parse_args()
+
+DEBUGGING: bool = args.debug
+
+
+@dataclass(unsafe_hash=True)
+class Vec2:
+    x: int
+    y: int
 
 
 def cprint(text: str, color: str, *args, **kwargs) -> None:
@@ -42,6 +61,11 @@ def write_aoc_inputs(aoc_inputs: dict[int, str]):
 
 
 def get_aoc_input(day: int) -> str:
+    if DEBUGGING:
+        return get_aoc_sample_input(day)
+
+    globals()["print"] = _print
+    globals()["rich.print"] = _print
     day = str(day)
     aoc_inputs = read_aoc_inputs()
 
@@ -74,11 +98,11 @@ def perf(func: Callable):
     func()
     end = time.perf_counter()
 
-    print(f"`{func.__name__}` took {end - start:.2f}s to run")
+    click.echo(f"`{func.__name__}` took {end - start:.2f}s to run")
 
 
 def answer(part: t.Literal[1, 2], value: int) -> None:
-    print(
+    click.echo(
         f"{colorama.Fore.GREEN}PART {part}{colorama.Fore.RESET} = {colorama.Fore.BLUE}{value}{colorama.Fore.RESET}"
     )
     clipboard.copy(str(value))
