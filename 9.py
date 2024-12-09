@@ -48,10 +48,10 @@ def part_1():
     data_size = len(data)
     counter = 0
     for i in range(data_size):
-        if set(data[i:]) == {"."}:
-            break
 
         if data[i] == ".":
+            if set(data[i:]) == {"."}:
+                break
             for j, digit in enumerate(data[::-1]):
                 if digit != ".":
                     last_digit_index = data_size - j - 1
