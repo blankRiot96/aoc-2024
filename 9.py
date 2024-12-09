@@ -1,4 +1,5 @@
 import itertools
+from dataclasses import dataclass
 
 import rich
 
@@ -20,38 +21,48 @@ def is_completed(data: list[str]) -> bool:
     return True
 
 
-def calculate_checksum(data: list[str]) -> int:
-    return sum(int(data[i]) * i for i in range(len(data[: data.index(".")])))
+def calculate_checksum(data: list[int]) -> int:
+    total = 0
+    current = 0
+    for file_id in data:
+        total += current * file_id
+        current += 1
+
+    return total
 
 
 def part_1():
     data_types = itertools.cycle(("block", "space"))
 
-    res = ""
+    data = []
     current_digit = 0
     for char in sample:
         dtype = next(data_types)
         if dtype == "block":
-            res += str(current_digit) * int(char)
+            data.extend([current_digit] * int(char))
             current_digit += 1
         else:
-            res += "." * int(char)
+            data.extend(["."] * int(char))
 
-    data = list(res)
-    while not is_completed(data):
-        digit_index = len(data) - 1
-        for e in data[::-1]:
-            if e != ".":
-                break
-            digit_index -= 1
+    print(data)
+    data_size = len(data)
+    counter = 0
+    for i in range(data_size):
+        if set(data[i:]) == {"."}:
+            break
 
-        nearest_dot_index = data.index(".")
-        data[nearest_dot_index], data[digit_index] = (
-            data[digit_index],
-            data[nearest_dot_index],
-        )
+        if data[i] == ".":
+            for j, digit in enumerate(data[::-1]):
+                if digit != ".":
+                    last_digit_index = data_size - j - 1
+                    break
+            data[i], data[last_digit_index] = data[last_digit_index], data[i]
+            counter += 1
 
-    utils.answer(1, calculate_checksum(data))
+    print(data)
+    checksum = calculate_checksum(data[:i])
+
+    utils.answer(1, checksum)
 
 
 def part_2():

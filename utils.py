@@ -1,4 +1,5 @@
 import argparse
+import builtins
 import json
 import time
 import typing as t
@@ -9,6 +10,7 @@ import click
 import clipboard
 import colorama
 import requests
+import rich
 
 parser = argparse.ArgumentParser(
     prog="aoc_util",
@@ -64,8 +66,8 @@ def get_aoc_input(day: int) -> str:
     if DEBUGGING:
         return get_aoc_sample_input(day)
 
-    globals()["print"] = _print
-    globals()["rich.print"] = _print
+    builtins.print = _print
+    rich.print = _print
     day = str(day)
     aoc_inputs = read_aoc_inputs()
 
